@@ -1,0 +1,169 @@
+name: terraform-aws-ec2
+version: 1.0.0
+description: AWS EC2 Instance Terraform module for IDEM deployments. This module creates EC2 instances on AWS, with support for single instances, multiple instances, and spot instances.
+author: Idem
+contact: contact@idem.com
+homepage: https://github.com/Idem-modules/terraform-aws-ec2
+license: Apache-2.0
+tags:
+  - aws
+  - ec2
+  - instance
+  - terraform
+  - idem
+dependencies:
+  - name: terraform
+    version: ">= 1.0"
+  - name: aws
+    source: hashicorp/aws
+    version: ">= 4.66"
+inputs:
+  - name: ami
+    description: ID of AMI to use for the instance
+    type: string
+    default: null
+    required: false
+  - name: ami_ssm_parameter
+    description: SSM parameter name for the AMI ID. For Amazon Linux AMI SSM parameters see [reference](https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-public-parameters-ami.html)
+    type: string
+    default: "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+    required: false
+  - name: associate_public_ip_address
+    description: Whether to associate a public IP address with an instance in a VPC
+    type: bool
+    default: null
+    required: false
+  - name: availability_zone
+    description: AZ to start the instance in
+    type: string
+    default: null
+    required: false
+  - name: capacity_reservation_specification
+    description: Describes an instance's Capacity Reservation targeting option
+    type: any
+    default: {}
+    required: false
+  - name: cpu_core_count
+    description: Sets the number of CPU cores for an instance
+    type: number
+    default: null
+    required: false
+  - name: cpu_credits
+    description: The credit option for CPU usage (unlimited or standard)
+    type: string
+    default: null
+    required: false
+  - name: cpu_options
+    description: Defines CPU options to apply to the instance at launch time.
+    type: any
+    default: {}
+    required: false
+  - name: cpu_threads_per_core
+    description: Sets the number of CPU threads per core for an instance (has no effect unless cpu_core_count is also set)
+    type: number
+    default: null
+    required: false
+  - name: create
+    description: Whether to create an instance
+    type: bool
+    default: true
+    required: false
+  - name: create_eip
+    description: Determines whether a public EIP will be created and associated with the instance.
+    type: bool
+    default: false
+    required: false
+  - name: create_iam_instance_profile
+    description: Determines whether an IAM instance profile is created or to use an existing IAM instance profile
+    type: bool
+    default: false
+    required: false
+  - name: create_spot_instance
+    description: Depicts if the instance is a spot instance
+    type: bool
+    default: false
+    required: false
+  - name: disable_api_stop
+    description: If true, enables EC2 Instance Stop Protection
+    type: bool
+    default: null
+    required: false
+  - name: disable_api_termination
+    description: If true, enables EC2 Instance Termination Protection
+    type: bool
+    default: null
+    required: false
+  - name: ebs_block_device
+    description: Additional EBS block devices to attach to the instance
+    type: list(any)
+    default: []
+    required: false
+  - name: ebs_optimized
+    description: If true, the launched EC2 instance will be EBS-optimized
+    type: bool
+    default: null
+    required: false
+  - name: eip_domain
+    description: Indicates if this EIP is for use in VPC
+    type: string
+    default: "vpc"
+    required: false
+  - name: eip_tags
+    description: A map of additional tags to add to the eip
+    type: map(string)
+    default: {}
+    required: false
+  - name: enable_volume_tags
+    description: Whether to enable volume tags (if enabled it conflicts with root_block_device tags)
+    type: bool
+    default: true
+    required: false
+outputs:
+  - name: id
+    description: The ID of the instance
+  - name: arn
+    description: The ARN of the instance
+  - name: capacity_reservation_specification
+    description: Capacity reservation specification of the instance
+  - name: instance_state
+    description: The state of the instance
+  - name: outpost_arn
+    description: The ARN of the Outpost the instance is assigned to
+  - name: password_data
+    description: Base-64 encoded encrypted password data for the instance. Useful for getting the administrator password for instances running Microsoft Windows. This attribute is only exported if `get_password_data` is true
+  - name: primary_network_interface_id
+    description: The ID of the instance's primary network interface
+  - name: private_dns
+    description: The private DNS name assigned to the instance. Can only be used inside the Amazon EC2, and only available if you've enabled DNS hostnames for your VPC
+  - name: public_dns
+    description: The public DNS name assigned to the instance. For EC2-VPC, this is only available if you've enabled DNS hostnames for your VPC
+  - name: public_ip
+    description: The public IP address assigned to the instance, if applicable.
+  - name: private_ip
+    description: The private IP address assigned to the instance
+  - name: ipv6_addresses
+    description: The IPv6 address assigned to the instance, if applicable
+  - name: tags_all
+    description: A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block
+  - name: spot_bid_status
+    description: The current bid status of the Spot Instance Request
+  - name: spot_request_state
+    description: The current request state of the Spot Instance Request
+  - name: spot_instance_id
+    description: The Instance ID (if any) that is currently fulfilling the Spot Instance request
+  - name: ami
+    description: AMI ID that was used to create the instance
+  - name: availability_zone
+    description: The availability zone of the created instance
+  - name: iam_role_name
+    description: The name of the IAM role
+  - name: iam_role_arn
+    description: The Amazon Resource Name (ARN) specifying the IAM role
+  - name: iam_role_unique_id
+    description: Stable and unique string identifying the IAM role
+  - name: iam_instance_profile_arn
+    description: ARN assigned by AWS to the instance profile
+  - name: iam_instance_profile_id
+    description: Instance profile's ID
+  - name: iam_instance_profile_unique
+    description: Stable and unique string identifying the IAM instance profile
